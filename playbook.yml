@@ -1,0 +1,38 @@
+- name: Konfiguracja serwera
+  hosts: web
+  become: true
+
+  tasks:
+    - name: Aktualizacja listy pakietów
+      apt:
+        update_cache: yes
+
+    - name: Instalacja nginx i ufw
+      apt:
+        name:
+          - nginx
+          - ufw
+        state: present
+
+
+     - name: Zezwól na SSH w firewallu
+       ufw:
+         rule: allow
+         port: "22"
+         proto: tcp
+
+     - name: Zezwól na HTTP w firewallu
+       ufw:
+         rule: allow
+         port: "80"
+         proto: tcp
+
+     - name: Włącz firewall
+       ufw:
+         state: enabled
+
+     - name: Upewnij się, że nginx działa
+       service:
+         name: nginx
+         state: started
+         enabled: true
