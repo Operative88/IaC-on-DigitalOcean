@@ -3,7 +3,7 @@
   become: true
 
   tasks:
-    - name: Aktualizacja listy pakietów
+    - name: Aktualizacja listy pakietow
       apt:
         update_cache: yes
 
@@ -14,25 +14,24 @@
           - ufw
         state: present
 
+    - name: Zezwol na SSH w firewallu
+      ufw:
+        rule: allow
+        port: "22"
+        proto: tcp
 
-     - name: Zezwól na SSH w firewallu
-       ufw:
-         rule: allow
-         port: "22"
-         proto: tcp
+    - name: Zezwol na HTTP w firewallu
+      ufw:
+        rule: allow
+        port: "80"
+        proto: tcp
 
-     - name: Zezwól na HTTP w firewallu
-       ufw:
-         rule: allow
-         port: "80"
-         proto: tcp
+    - name: Wlacz firewall
+      ufw:
+        state: enabled
 
-     - name: Włącz firewall
-       ufw:
-         state: enabled
-
-     - name: Upewnij się, że nginx działa
-       service:
-         name: nginx
-         state: started
-         enabled: true
+    - name: Upewnij sie ze nginx dziala
+      service:
+        name: nginx
+        state: started
+        enabled: true
